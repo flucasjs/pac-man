@@ -58,3 +58,25 @@ createBoard();
 
 let pacmanStartingIndex = 490;
 squares[pacmanStartingIndex].classList.add('pacman');
+
+function control(e) {
+    switch(e.keyCode) {
+        case 40:
+        console.log('pressed down')
+        break
+
+        case 38:
+        console.log('pressed up')
+        break
+
+        case 37:
+        console.log('pressed left')
+        break
+        
+        case 39:
+        console.log('pressed right')
+        break
+    }
+}
+
+document.addEventListener('keyup', control)
