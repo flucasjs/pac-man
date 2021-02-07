@@ -57,26 +57,37 @@ function createBoard() {
 createBoard();
 
 let pacmanStartingIndex = 490;
+let pacmanCurrentIndex = pacmanStartingIndex;
 squares[pacmanStartingIndex].classList.add('pacman');
 
 function control(e) {
+    squares[pacmanCurrentIndex].classList.remove('pacman');
     switch(e.keyCode) {
         case 40:
-        console.log('pressed down')
+            if (pacmanCurrentIndex < squares.length - width) {
+                pacmanCurrentIndex += width;
+            }
         break
 
         case 38:
-        console.log('pressed up')
+            if (pacmanCurrentIndex >= width) {
+                pacmanCurrentIndex -= width;
+            }
         break
 
         case 37:
-        console.log('pressed left')
+            if (pacmanCurrentIndex % width !== 0) {
+                pacmanCurrentIndex--;
+            }
         break
         
         case 39:
-        console.log('pressed right')
+            if (pacmanCurrentIndex % width < width - 1) {
+                pacmanCurrentIndex++;
+            }
         break
     }
+    squares[pacmanCurrentIndex].classList.add('pacman');
 }
 
 document.addEventListener('keyup', control)
