@@ -2,6 +2,7 @@ const width = 28;
 const grid = document.querySelector('.grid');
 const scoreDisplay = document.getElementById('score');
 let squares = [];
+let score = 0;
 
 const layout = [
     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -44,6 +45,8 @@ function createBoard() {
             square.classList.add('pac-dot');
         } else if (layout[i] === 1) {
             square.classList.add('wall');
+        } else if (layout[i] === 2) {
+            square.classList.add('ghost-lair');
         } else if (layout[i] === 3) {
             square.classList.add('power-pellet');
         }
@@ -65,6 +68,7 @@ function control(e) {
     switch(e.keyCode) {
         case 40:
             if (
+                !squares[pacmanCurrentIndex + width].classList.contains('ghost-lair') &&
                 !squares[pacmanCurrentIndex + width].classList.contains('wall') &&
                 pacmanCurrentIndex + width < width * width
                 ) 
@@ -73,27 +77,31 @@ function control(e) {
 
         case 38:
             if (
+                !squares[pacmanCurrentIndex - width].classList.contains('ghost-lair') &&
                 !squares[pacmanCurrentIndex - width].classList.contains('wall') &&
-                pacmanCurrentIndex - width >=0
+                pacmanCurrentIndex - width >= 0
                 ) 
                 pacmanCurrentIndex -= width
         break
 
         case 37:
-            if( 
+            if ( 
+                !squares[pacmanCurrentIndex - 1].classList.contains('ghost-lair') &&
                 !squares[pacmanCurrentIndex - 1].classList.contains('wall') &&
-                pacmanCurrentIndex % width !==0
+                pacmanCurrentIndex % width !== 0
                 ) 
                 pacmanCurrentIndex -=1
         break
         
         case 39:
             if(
+                !squares[pacmanCurrentIndex + 1].classList.contains('ghost-lair') &&
                 !squares[pacmanCurrentIndex + 1].classList.contains('wall') &&
                 pacmanCurrentIndex % width < width -1
                 ) 
                 pacmanCurrentIndex +=1
         break
+
     }
     squares[pacmanCurrentIndex].classList.add('pacman');
 }
