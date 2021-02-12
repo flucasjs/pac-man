@@ -36,7 +36,25 @@ html, body {
 }
 
 .pacman {
+    background-color: orange;  
+}
+
+.blinky {
+    background-color: red;
+    border: none;
+}
+
+.pinky {
+    background-color: pink;
+    border: none;
+}
+
+.inky {
+    background-color: aqua;
+    border: none;
+}
+
+.clyde {
     background-color: orange;
-    /* We need this for the cases that this also has the class .pac-dot */
-    border: none;  
+    border: none;
 }
