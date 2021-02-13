@@ -122,12 +122,26 @@ function pacDotEaten() {
     }
 }
 
+function powerPelletEaten() {
+    if (squares[pacmanCurrentIndex].classList.contains()) {
+        squares[pacmanCurrentIndex].classList.remove('power-pellet');
+        score += 10;
+        ghost.forEach(ghost => ghost.isScared = true);
+        setTimeout(unScareGhosts, 10000);
+    }
+}
+
+function unScareGhosts() {
+    ghosts.forEach(ghost => ghost.isScared = false);
+}
+
 class Ghost {
     constructor(className, startIndex, speed) {
         this.className = className;
         this.startIndex = startIndex;
         this.speed = speed;
         this.currentIndex = startIndex;
+        this.isScared = false;
         this.timerId = undefined;
     }
 }
@@ -163,6 +177,20 @@ function moveGhost(ghost) {
             squares[ghost.currentIndex].classList.add('ghost');
         } else {
             direction = directions[Math.floor(Math.random() * directions.length)];
+        }
+
+        if (ghost.isScared) {
+            squares[ghost.currentIndex].classList.add('scared-ghost');
+        }
+
+        if (ghost.isScared && ghost.currentIndex === pacmanCurrentIndex) {
+            squares[ghost.currentIndex].classList.remove(ghost.className);
+            squares[ghost.currentIndex].classList.remove('ghost');
+            squares[ghost.currentIndex].classList.remove('scared-ghost');
+
+            ghost.currentIndex = ghost.startIndex;
+
+            score += 100;
         }
     }, ghost.speed);
 }
