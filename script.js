@@ -71,8 +71,9 @@ function control(e) {
                 !squares[pacmanCurrentIndex + width].classList.contains('ghost-lair') &&
                 !squares[pacmanCurrentIndex + width].classList.contains('wall') &&
                 pacmanCurrentIndex + width < width * width
-                ) 
-                pacmanCurrentIndex += width
+            ) {
+                pacmanCurrentIndex += width;
+            }
         break
 
         case 38:
@@ -80,8 +81,9 @@ function control(e) {
                 !squares[pacmanCurrentIndex - width].classList.contains('ghost-lair') &&
                 !squares[pacmanCurrentIndex - width].classList.contains('wall') &&
                 pacmanCurrentIndex - width >= 0
-                ) 
-                pacmanCurrentIndex -= width
+            ) {
+                pacmanCurrentIndex -= width;
+            }
         break
 
         case 37:
@@ -89,10 +91,12 @@ function control(e) {
                 !squares[pacmanCurrentIndex - 1].classList.contains('ghost-lair') &&
                 !squares[pacmanCurrentIndex - 1].classList.contains('wall') &&
                 pacmanCurrentIndex % width !== 0
-                ) 
-                pacmanCurrentIndex -=1
+            ) {
+                pacmanCurrentIndex -=1;
+            }
+
             if (pacmanCurrentIndex === 364) {
-                pacmanCurrentIndex = 391
+                pacmanCurrentIndex = 391;
             }
         break
         
@@ -101,15 +105,18 @@ function control(e) {
                 !squares[pacmanCurrentIndex + 1].classList.contains('ghost-lair') &&
                 !squares[pacmanCurrentIndex + 1].classList.contains('wall') &&
                 pacmanCurrentIndex % width < width -1
-                ) 
-                pacmanCurrentIndex +=1
+            ) {
+                pacmanCurrentIndex +=1;
+            }
+
             if (pacmanCurrentIndex === 391) {
-                pacmanCurrentIndex = 364
+                pacmanCurrentIndex = 364;
             }
         break
 
     }
     squares[pacmanCurrentIndex].classList.add('pacman');
+    checkForGameOver();
     pacDotEaten();
     powerPelletEaten();
 }
@@ -168,9 +175,10 @@ function moveGhost(ghost) {
     let direction = directions[Math.floor(Math.random() * directions.length)];
 
     ghost.timerId = setInterval(function() {
-        if (!squares[ghost.currentIndex + direction].classList.contains('wall') &&
-            !squares[ghost.currentIndex + direction].classList.contains('ghost')) 
-        {
+        if (
+            !squares[ghost.currentIndex + direction].classList.contains('wall') &&
+            !squares[ghost.currentIndex + direction].classList.contains('ghost')
+        ) {
             squares[ghost.currentIndex].classList.remove(ghost.className);
             squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost');
         
@@ -186,16 +194,27 @@ function moveGhost(ghost) {
             squares[ghost.currentIndex].classList.add('scared-ghost');
         }
 
-        if (ghost.isScared && ghost.currentIndex === pacmanCurrentIndex) {
-            squares[ghost.currentIndex].classList.remove(ghost.className);
-            squares[ghost.currentIndex].classList.remove('ghost');
-            squares[ghost.currentIndex].classList.remove('scared-ghost');
+        if (ghost.isScared && ghosts[ghost.currentIndex].classList.contains('pacman')) {
+            squares[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'scared-ghost');
 
             ghost.currentIndex = ghost.startIndex;
 
-            score += 100;
+            scoreDisplay.textContent = score += 100;
 
             squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
         }
+
+        checkForGameOver();
     }, ghost.speed);
+}
+
+function checkForGameOver() {
+    if (
+        squares[pacmanCurrentIndex].classList.contains('ghost') && 
+        !squares[pacmanCurrentIndex].classList.contains('scared-ghost')
+    ) {
+        ghosts.forEach(ghost => clearInterval(ghost.timerId));
+        document.removeEventListener('keyup', control);
+        scoreDisplay.textContent = " Game Over";
+    }
 }
