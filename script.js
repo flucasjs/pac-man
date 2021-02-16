@@ -1,6 +1,6 @@
 const width = 28;
-const grid = document.querySelector('.grid');
-const scoreDisplay = document.getElementById('score');
+const grid = document.querySelector(".grid");
+const scoreDisplay = document.getElementById("score");
 let squares = [];
 let score = 0;
 
@@ -38,17 +38,17 @@ const layout = [
 function createBoard() {
     let divSquares = new DocumentFragment();
     for (let i = 0; i < layout.length; i++) {
-        let square = document.createElement('div');
+        let square = document.createElement("div");
         
 
         if (layout[i] === 0) {
-            square.classList.add('pac-dot');
+            square.classList.add("pac-dot");
         } else if (layout[i] === 1) {
-            square.classList.add('wall');
+            square.classList.add("wall");
         } else if (layout[i] === 2) {
-            square.classList.add('ghost-lair');
+            square.classList.add("ghost-lair");
         } else if (layout[i] === 3) {
-            square.classList.add('power-pellet');
+            square.classList.add("power-pellet");
         }
 
         divSquares.appendChild(square);
@@ -61,15 +61,15 @@ createBoard();
 
 let pacmanStartingIndex = 490;
 let pacmanCurrentIndex = pacmanStartingIndex;
-squares[pacmanStartingIndex].classList.add('pacman');
+squares[pacmanStartingIndex].classList.add("pacman");
 
 function control(e) {
-    squares[pacmanCurrentIndex].classList.remove('pacman');
+    squares[pacmanCurrentIndex].classList.remove("pacman");
     switch(e.keyCode) {
         case 40:
             if (
-                !squares[pacmanCurrentIndex + width].classList.contains('ghost-lair') &&
-                !squares[pacmanCurrentIndex + width].classList.contains('wall') &&
+                !squares[pacmanCurrentIndex + width].classList.contains("ghost-lair") &&
+                !squares[pacmanCurrentIndex + width].classList.contains("wall") &&
                 pacmanCurrentIndex + width < width * width
             ) {
                 pacmanCurrentIndex += width;
@@ -78,8 +78,8 @@ function control(e) {
 
         case 38:
             if (
-                !squares[pacmanCurrentIndex - width].classList.contains('ghost-lair') &&
-                !squares[pacmanCurrentIndex - width].classList.contains('wall') &&
+                !squares[pacmanCurrentIndex - width].classList.contains("ghost-lair") &&
+                !squares[pacmanCurrentIndex - width].classList.contains("wall") &&
                 pacmanCurrentIndex - width >= 0
             ) {
                 pacmanCurrentIndex -= width;
@@ -88,8 +88,8 @@ function control(e) {
 
         case 37:
             if ( 
-                !squares[pacmanCurrentIndex - 1].classList.contains('ghost-lair') &&
-                !squares[pacmanCurrentIndex - 1].classList.contains('wall') &&
+                !squares[pacmanCurrentIndex - 1].classList.contains("ghost-lair") &&
+                !squares[pacmanCurrentIndex - 1].classList.contains("wall") &&
                 pacmanCurrentIndex % width !== 0
             ) {
                 pacmanCurrentIndex -=1;
@@ -102,8 +102,8 @@ function control(e) {
         
         case 39:
             if(
-                !squares[pacmanCurrentIndex + 1].classList.contains('ghost-lair') &&
-                !squares[pacmanCurrentIndex + 1].classList.contains('wall') &&
+                !squares[pacmanCurrentIndex + 1].classList.contains("ghost-lair") &&
+                !squares[pacmanCurrentIndex + 1].classList.contains("wall") &&
                 pacmanCurrentIndex % width < width -1
             ) {
                 pacmanCurrentIndex +=1;
@@ -115,24 +115,25 @@ function control(e) {
         break
 
     }
-    squares[pacmanCurrentIndex].classList.add('pacman');
+    squares[pacmanCurrentIndex].classList.add("pacman");
     checkForGameOver();
     pacDotEaten();
     powerPelletEaten();
+    checkForWin();
 }
 
-document.addEventListener('keyup', control)
+document.addEventListener("keyup", control)
 
 function pacDotEaten() {
-    if (squares[pacmanCurrentIndex].classList.contains('pac-dot')) {
-        squares[pacmanCurrentIndex].classList.remove('pac-dot');
+    if (squares[pacmanCurrentIndex].classList.contains("pac-dot")) {
+        squares[pacmanCurrentIndex].classList.remove("pac-dot");
         scoreDisplay.textContent = ++score;
     }
 }
 
 function powerPelletEaten() {
-    if (squares[pacmanCurrentIndex].classList.contains('power-pellet')) {
-        squares[pacmanCurrentIndex].classList.remove('power-pellet');
+    if (squares[pacmanCurrentIndex].classList.contains("power-pellet")) {
+        squares[pacmanCurrentIndex].classList.remove("power-pellet");
 
         ghosts.forEach(ghost => ghost.isScared = true);
         setTimeout(unScareGhosts, 10000);
@@ -157,15 +158,15 @@ class Ghost {
 }
 
 const ghosts = [
-    new Ghost('blinky', 348, 250),
-    new Ghost('pinky', 376, 400),
-    new Ghost('inky', 351, 300),
-    new Ghost('clyde', 379, 500)
+    new Ghost("blinky", 348, 250),
+    new Ghost("pinky", 376, 400),
+    new Ghost("inky", 351, 300),
+    new Ghost("clyde", 379, 500)
 ];
 
 ghosts.forEach(ghost => {
     squares[ghost.startIndex].classList.add(ghost.className);
-    squares[ghost.startIndex].classList.add('ghost');
+    squares[ghost.startIndex].classList.add("ghost");
 })
 
 ghosts.forEach(ghost => moveGhost(ghost));
@@ -176,32 +177,32 @@ function moveGhost(ghost) {
 
     ghost.timerId = setInterval(function() {
         if (
-            !squares[ghost.currentIndex + direction].classList.contains('wall') &&
-            !squares[ghost.currentIndex + direction].classList.contains('ghost')
+            !squares[ghost.currentIndex + direction].classList.contains("wall") &&
+            !squares[ghost.currentIndex + direction].classList.contains("ghost")
         ) {
             squares[ghost.currentIndex].classList.remove(ghost.className);
-            squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost');
+            squares[ghost.currentIndex].classList.remove("ghost", "scared-ghost");
         
             ghost.currentIndex += direction;
         
             squares[ghost.currentIndex].classList.add(ghost.className);
-            squares[ghost.currentIndex].classList.add('ghost');
+            squares[ghost.currentIndex].classList.add("ghost");
         } else {
             direction = directions[Math.floor(Math.random() * directions.length)];
         }
 
         if (ghost.isScared) {
-            squares[ghost.currentIndex].classList.add('scared-ghost');
+            squares[ghost.currentIndex].classList.add("scared-ghost");
         }
 
-        if (ghost.isScared && ghosts[ghost.currentIndex].classList.contains('pacman')) {
-            squares[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'scared-ghost');
+        if (ghost.isScared && ghosts[ghost.currentIndex].classList.contains("pacman")) {
+            squares[ghost.currentIndex].classList.remove(ghost.className, "ghost", "scared-ghost");
 
             ghost.currentIndex = ghost.startIndex;
 
             scoreDisplay.textContent = score += 100;
 
-            squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
+            squares[ghost.currentIndex].classList.add(ghost.className, "ghost");
         }
 
         checkForGameOver();
@@ -210,11 +211,19 @@ function moveGhost(ghost) {
 
 function checkForGameOver() {
     if (
-        squares[pacmanCurrentIndex].classList.contains('ghost') && 
-        !squares[pacmanCurrentIndex].classList.contains('scared-ghost')
+        squares[pacmanCurrentIndex].classList.contains("ghost") && 
+        !squares[pacmanCurrentIndex].classList.contains("scared-ghost")
     ) {
         ghosts.forEach(ghost => clearInterval(ghost.timerId));
-        document.removeEventListener('keyup', control);
+        document.removeEventListener("keyup", control);
         scoreDisplay.textContent = " Game Over";
+    }
+}
+
+function checkForWin() {
+    if (score === 274) {
+        ghosts.forEach(ghost => clearInterval(ghost.timerId));
+        document.removeEventListener("keyup", control);
+        scoreDisplay.textContent = "You Won!";
     }
 }
