@@ -68,9 +68,8 @@ function control(e) {
     switch(e.keyCode) {
         case 40:
             if (
-                !squares[pacmanCurrentIndex + width].classList.contains("ghost-lair") &&
-                !squares[pacmanCurrentIndex + width].classList.contains("wall") &&
-                pacmanCurrentIndex + width < width * width
+                !squares[pacmanCurrentIndex + width].classList.contains("ghost-lair", "wall") &&
+                pacmanCurrentIndex + width < width ** 2
             ) {
                 pacmanCurrentIndex += width;
             }
@@ -78,8 +77,7 @@ function control(e) {
 
         case 38:
             if (
-                !squares[pacmanCurrentIndex - width].classList.contains("ghost-lair") &&
-                !squares[pacmanCurrentIndex - width].classList.contains("wall") &&
+                !squares[pacmanCurrentIndex - width].classList.contains("ghost-lair", "wall") &&
                 pacmanCurrentIndex - width >= 0
             ) {
                 pacmanCurrentIndex -= width;
@@ -88,11 +86,10 @@ function control(e) {
 
         case 37:
             if ( 
-                !squares[pacmanCurrentIndex - 1].classList.contains("ghost-lair") &&
-                !squares[pacmanCurrentIndex - 1].classList.contains("wall") &&
+                !squares[pacmanCurrentIndex - 1].classList.contains("ghost-lair", "wall") &&
                 pacmanCurrentIndex % width !== 0
             ) {
-                pacmanCurrentIndex -=1;
+                pacmanCurrentIndex--;
             }
 
             if (pacmanCurrentIndex === 364) {
@@ -102,11 +99,10 @@ function control(e) {
         
         case 39:
             if(
-                !squares[pacmanCurrentIndex + 1].classList.contains("ghost-lair") &&
-                !squares[pacmanCurrentIndex + 1].classList.contains("wall") &&
-                pacmanCurrentIndex % width < width -1
+                !squares[pacmanCurrentIndex + 1].classList.contains("ghost-lair", "wall") &&
+                pacmanCurrentIndex % width < width - 1
             ) {
-                pacmanCurrentIndex +=1;
+                pacmanCurrentIndex++;
             }
 
             if (pacmanCurrentIndex === 391) {
@@ -165,8 +161,7 @@ const ghosts = [
 ];
 
 ghosts.forEach(ghost => {
-    squares[ghost.startIndex].classList.add(ghost.className);
-    squares[ghost.startIndex].classList.add("ghost");
+    squares[ghost.startIndex].classList.add(ghost.className, "ghost");
 })
 
 ghosts.forEach(ghost => moveGhost(ghost));
@@ -176,17 +171,12 @@ function moveGhost(ghost) {
     let direction = directions[Math.floor(Math.random() * directions.length)];
 
     ghost.timerId = setInterval(function() {
-        if (
-            !squares[ghost.currentIndex + direction].classList.contains("wall") &&
-            !squares[ghost.currentIndex + direction].classList.contains("ghost")
-        ) {
-            squares[ghost.currentIndex].classList.remove(ghost.className);
-            squares[ghost.currentIndex].classList.remove("ghost", "scared-ghost");
+        if (!squares[ghost.currentIndex + direction].classList.contains("wall", "ghost")) {
+            squares[ghost.currentIndex].classList.remove(ghost.className, "ghost", "scared-ghost");
         
             ghost.currentIndex += direction;
         
-            squares[ghost.currentIndex].classList.add(ghost.className);
-            squares[ghost.currentIndex].classList.add("ghost");
+            squares[ghost.currentIndex].classList.add(ghost.className, "ghost");
         } else {
             direction = directions[Math.floor(Math.random() * directions.length)];
         }
@@ -204,7 +194,6 @@ function moveGhost(ghost) {
 
             squares[ghost.currentIndex].classList.add(ghost.className, "ghost");
         }
-
         checkForGameOver();
     }, ghost.speed);
 }
@@ -221,7 +210,7 @@ function checkForGameOver() {
 }
 
 function checkForWin() {
-    if (score === 274) {
+    if (score >= 274) {
         ghosts.forEach(ghost => clearInterval(ghost.timerId));
         document.removeEventListener("keyup", control);
         scoreDisplay.textContent = "You Won!";
