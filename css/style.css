@@ -3,6 +3,10 @@ html, body {
     padding: 10;
 }
 
+div {
+    background: black;
+}
+
 .grid {
     display: flex;
     flex-wrap: wrap;
@@ -17,8 +21,8 @@ html, body {
 }
 
 .pac-dot {
-    background-color: green;
-    border: 5px solid white;
+    background-color: #FFFF00;
+    border: 5px solid black;
     box-sizing: border-box;
 }
 
@@ -32,34 +36,34 @@ html, body {
 }
 
 .power-pellet {
-    background-color: green;
+    background-color: #FFFF00;
 }
 
 .pacman {
-    background-color: orange;  
+    background-color: #FFFF00;  
 }
 
 .blinky {
-    background-color: red;
+    background-color: #FF0000;
     border: none;
 }
 
 .pinky {
-    background-color: pink;
+    background-color: #FFB8FF;
     border: none;
 }
 
 .inky {
-    background-color: aqua;
+    background-color: #00FFFF;
     border: none;
 }
 
 .clyde {
-    background-color: orange;
+    background-color: #FFB852;
     border: none;
 }
 
 .scared-ghost {
-    background-color: aquamarine;
+    background-color: #1919A6;
     border: none;
 }
