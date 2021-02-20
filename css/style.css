@@ -1,6 +1,11 @@
 html, body {
     margin: 10;
     padding: 10;
+    background: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 div {
@@ -18,6 +23,13 @@ div {
 .grid div {
     width: 15px;
     height: 15px;
+}
+
+h3,
+#score {
+    font-family: 'Monoton', monospace;
+    font-size: 2.5rem;
+    color: blue;
 }
 
 .pac-dot {
