@@ -1,6 +1,7 @@
 const width = 28;
 const grid = document.querySelector(".grid");
-const scoreDisplay = document.getElementById("score");
+const scoreText = document.querySelector("#score");
+const scoreValue = document.querySelector("#score span");
 let squares = [];
 let score = 0;
 
@@ -127,7 +128,7 @@ document.addEventListener("keyup", control)
 function pacDotEaten() {
     if (squares[pacmanCurrentIndex].classList.contains("pac-dot")) {
         squares[pacmanCurrentIndex].classList.remove("pac-dot");
-        scoreDisplay.textContent = ++score;
+        scoreValue.textContent = ++score;
     }
 }
 
@@ -138,7 +139,7 @@ function powerPelletEaten() {
         ghosts.forEach(ghost => ghost.isScared = true);
         setTimeout(unScareGhosts, 10000);
 
-        scoreDisplay.textContent = score += 10;
+        scoreValue.textContent = score += 10;
     }
 }
 
@@ -195,7 +196,7 @@ function moveGhost(ghost) {
 
             ghost.currentIndex = ghost.startIndex;
 
-            scoreDisplay.textContent = score += 100;
+            scoreValue.textContent = score += 100;
 
             squares[ghost.currentIndex].classList.add(ghost.className, "ghost");
         }
@@ -210,7 +211,7 @@ function checkForGameOver() {
     ) {
         ghosts.forEach(ghost => clearInterval(ghost.timerId));
         document.removeEventListener("keyup", control);
-        scoreDisplay.textContent = " Game Over";
+        scoreValue.textContent = " Game Over";
     }
 }
 
@@ -218,6 +219,6 @@ function checkForWin() {
     if (score >= 274) {
         ghosts.forEach(ghost => clearInterval(ghost.timerId));
         document.removeEventListener("keyup", control);
-        scoreDisplay.textContent = "You Won!";
+        scoreValue.textContent = "You Won!";
     }
 }
