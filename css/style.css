@@ -43,39 +43,47 @@ h3,
 }
 
 .pacman,
-.power-pellet {
+.power-pellet,
+.pac-dot {
     border-radius: 7.5px;
+    box-sizing: border-box;
 }
 
 .power-pellet {
-    background-color: #FFFF00;
+    background-color: #ffff00;
+    border: 2.5px solid black;
 }
 
 .pacman {
-    background-color: #FFFF00;  
+    background-color: #FFFF00;
+}
+
+.blinky,
+.pinky,
+.inky,
+.clyde {
+    border: none;
+    border-radius: 10px 10px 0px 0px;
+    border: 2px solid black;
+    box-sizing: border-box;
 }
 
 .blinky {
     background-color: #FF0000;
-    border: none;
 }
 
 .pinky {
     background-color: #FFB8FF;
-    border: none;
 }
 
 .inky {
     background-color: #00FFFF;
-    border: none;
 }
 
 .clyde {
     background-color: #FFB852;
-    border: none;
 }
 
 .scared-ghost {
     background-color: #1919A6;
-    border: none;
 }
