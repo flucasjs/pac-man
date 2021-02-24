@@ -17,7 +17,7 @@ div {
     flex-wrap: wrap;
     width: 420px;
     height: 420px;
-    border: solid black;
+    border-radius: 10px;
 }
 
 .grid div {
@@ -86,4 +86,20 @@ h3,
 
 .scared-ghost {
     background-color: #1919A6;
+}
+
+.top-right-corner {
+    border-top-right-radius: 10px;
+}
+
+.top-left-corner {
+    border-top-left-radius: 10px;
+}
+
+.bottom-right-corner {
+    border-bottom-right-radius: 10px;
+}
+
+.bottom-left-corner {
+    border-bottom-left-radius: 10px;
 }
