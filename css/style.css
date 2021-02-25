@@ -39,7 +39,9 @@ h3,
 }
 
 .wall {
-    background-color: blue;
+    border: 1px solid blue;
+    background-color: black;
+    box-sizing: border-box;
 }
 
 .pacman,
