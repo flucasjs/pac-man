@@ -199,7 +199,8 @@ function moveGhost(ghost) {
             squares[ghost.currentIndex].classList.add("scared-ghost");
         }
 
-        if (ghost.isScared && ghosts[ghost.currentIndex].classList.contains("pacman")) {
+        if (ghost.isScared && squares[ghost.currentIndex].classList.contains("pacman")) {
+            
             squares[ghost.currentIndex].classList.remove(ghost.className, "ghost", "scared-ghost");
 
             ghost.currentIndex = ghost.startIndex;
