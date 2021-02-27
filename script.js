@@ -69,62 +69,73 @@ function createBoard() {
 createBoard();
 
 let pacmanStartingIndex = 490;
-let pacmanCurrentIndex = pacmanStartingIndex;
+// let currentIndex = pacmanStartingIndex;
 squares[pacmanStartingIndex].classList.add("pacman");
 
+class Pacman {
+    constructor(startIndex, speed) {
+        this.startIndex = startIndex;
+        this.speed = speed;
+        this.currentIndex = startIndex;
+        this.timerId = undefined;
+    }
+}
+
+let pacman = new Pacman(pacmanStartingIndex, 300)
+
 function control(e) {
-    squares[pacmanCurrentIndex].classList.remove("pacman");
+    squares[pacman.currentIndex].classList.remove("pacman");
     switch(e.keyCode) {
         case 40:
             if (
-                !squares[pacmanCurrentIndex + width].classList.contains("ghost-lair") &&
-                !squares[pacmanCurrentIndex + width].classList.contains("wall") &&
-                pacmanCurrentIndex + width < width ** 2
+                !squares[pacman.currentIndex + width].classList.contains("ghost-lair") &&
+                !squares[pacman.currentIndex + width].classList.contains("wall") &&
+                pacman.currentIndex + width < width ** 2
             ) {
-                pacmanCurrentIndex += width;
+                pacman.currentIndex += width;
             }
         break
 
         case 38:
             if (
-                !squares[pacmanCurrentIndex - width].classList.contains("ghost-lair") &&
-                !squares[pacmanCurrentIndex - width].classList.contains("wall") &&
-                pacmanCurrentIndex - width >= 0
+                !squares[pacman.currentIndex - width].classList.contains("ghost-lair") &&
+                !squares[pacman.currentIndex - width].classList.contains("wall") &&
+                pacman.currentIndex - width >= 0
             ) {
-                pacmanCurrentIndex -= width;
+                pacman.currentIndex -= width;
             }
         break
 
         case 37:
             if ( 
-                !squares[pacmanCurrentIndex - 1].classList.contains("ghost-lair") &&
-                !squares[pacmanCurrentIndex - 1].classList.contains("wall") &&
-                pacmanCurrentIndex % width !== 0
+                !squares[pacman.currentIndex - 1].classList.contains("ghost-lair") &&
+                !squares[pacman.currentIndex - 1].classList.contains("wall") &&
+                pacman.currentIndex % width !== 0
             ) {
-                pacmanCurrentIndex--;
+                pacman.currentIndex--;
             }
 
-            if (pacmanCurrentIndex === 364) {
-                pacmanCurrentIndex = 391;
+            if (pacman.currentIndex === 364) {
+                pacman.currentIndex = 391;
             }
         break
         
         case 39:
             if(
-                !squares[pacmanCurrentIndex + 1].classList.contains("ghost-lair") &&
-                !squares[pacmanCurrentIndex + 1].classList.contains("wall") &&
-                pacmanCurrentIndex % width < width - 1
+                !squares[pacman.currentIndex + 1].classList.contains("ghost-lair") &&
+                !squares[pacman.currentIndex + 1].classList.contains("wall") &&
+                pacman.currentIndex % width < width - 1
             ) {
-                pacmanCurrentIndex++;
+                pacman.currentIndex++;
             }
 
-            if (pacmanCurrentIndex === 391) {
-                pacmanCurrentIndex = 364;
+            if (pacman.currentIndex === 391) {
+                pacman.currentIndex = 364;
             }
         break
 
     }
-    squares[pacmanCurrentIndex].classList.add("pacman");
+    squares[pacman.currentIndex].classList.add("pacman");
     checkForGameOver();
     pacDotEaten();
     powerPelletEaten();
@@ -134,15 +145,15 @@ function control(e) {
 document.addEventListener("keyup", control)
 
 function pacDotEaten() {
-    if (squares[pacmanCurrentIndex].classList.contains("pac-dot")) {
-        squares[pacmanCurrentIndex].classList.remove("pac-dot");
+    if (squares[pacman.currentIndex].classList.contains("pac-dot")) {
+        squares[pacman.currentIndex].classList.remove("pac-dot");
         scoreValue.textContent = ++score;
     }
 }
 
 function powerPelletEaten() {
-    if (squares[pacmanCurrentIndex].classList.contains("power-pellet")) {
-        squares[pacmanCurrentIndex].classList.remove("power-pellet");
+    if (squares[pacman.currentIndex].classList.contains("power-pellet")) {
+        squares[pacman.currentIndex].classList.remove("power-pellet");
 
         ghosts.forEach(ghost => ghost.isScared = true);
         setTimeout(unScareGhosts, 10000);
@@ -215,8 +226,8 @@ function moveGhost(ghost) {
 
 function checkForGameOver() {
     if (
-        squares[pacmanCurrentIndex].classList.contains("ghost") && 
-        !squares[pacmanCurrentIndex].classList.contains("scared-ghost")
+        squares[pacman.currentIndex].classList.contains("ghost") && 
+        !squares[pacman.currentIndex].classList.contains("scared-ghost")
     ) {
         ghosts.forEach(ghost => clearInterval(ghost.timerId));
         document.removeEventListener("keyup", control);
