@@ -69,7 +69,6 @@ function createBoard() {
 createBoard();
 
 let pacmanStartingIndex = 490;
-// let currentIndex = pacmanStartingIndex;
 squares[pacmanStartingIndex].classList.add("pacman");
 
 class Pacman {
@@ -81,7 +80,17 @@ class Pacman {
     }
 }
 
+// function movePacman(speed) {
+//     pacman.timerId = setInterval(function() {
+//         squares[pacman.currentIndex].classList.remove("pacman");
+//         squares[pacman.currentIndex + 1].classList.add("pacman");
+//         pacman.currentIndex = pacman.currentIndex + 1;
+//     }, speed)
+// }
 let pacman = new Pacman(pacmanStartingIndex, 300)
+// movePacman(pacman.speed);
+
+
 
 function control(e) {
     squares[pacman.currentIndex].classList.remove("pacman");
@@ -194,7 +203,7 @@ function moveGhost(ghost) {
     const directions = [-1, +1, -width, +width];
     let direction = directions[Math.floor(Math.random() * directions.length)];
 
-    ghost.timerId = setInterval(function() {
+    ghost.timerId = setInterval(() => {
         if (
             !squares[ghost.currentIndex + direction].classList.contains("wall") &&
             !squares[ghost.currentIndex + direction].classList.contains("ghost")
