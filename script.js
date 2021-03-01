@@ -77,23 +77,65 @@ class Pacman {
         this.speed = speed;
         this.currentIndex = startIndex;
         this.timerId = undefined;
+        this.direction = 1;
     }
 }
 
-// function movePacman(speed) {
-//     pacman.timerId = setInterval(function() {
-//         squares[pacman.currentIndex].classList.remove("pacman");
-//         squares[pacman.currentIndex + 1].classList.add("pacman");
-//         pacman.currentIndex = pacman.currentIndex + 1;
-//     }, speed)
-// }
+
+function movePacman(pacman, speed) {
+    pacman.timerId = setInterval(function() {
+        const boundaryCollision = (
+            squares[pacman.currentIndex + pacman.direction].classList.contains("ghost-lair") ||
+            squares[pacman.currentIndex + pacman.direction].classList.contains("wall")
+        )
+        
+        squares[pacman.currentIndex].classList.remove("pacman");
+
+        if (
+            pacman.direction === width &&
+            !boundaryCollision &&
+            pacman.currentIndex + width < (width ** 2) - width
+        ) {
+            pacman.currentIndex += pacman.direction;
+        } else if (
+            pacman.direction === -width &&
+            !boundaryCollision &&
+            pacman.currentIndex >= width * 2
+        ) {
+            pacman.currentIndex += pacman.direction;
+        } else if (
+            pacman.direction === -1 &&
+            !boundaryCollision &&
+            pacman.currentIndex % width !== 1
+        ) {
+            pacman.currentIndex += pacman.direction;
+
+            if (pacman.currentIndex === 364) {
+                pacman.currentIndex = 391;
+            }
+        } else if (
+            pacman.direction === 1 &&
+            !boundaryCollision &&
+            pacman.currentIndex % width < width - 2
+        ) {
+            pacman.currentIndex += pacman.direction;
+
+            if (pacman.currentIndex === 392) {
+                pacman.currentIndex = 364;
+            }
+        }
+
+        squares[pacman.currentIndex].classList.add("pacman");
+        checkForGameOver();
+        pacDotEaten();
+        powerPelletEaten();
+        checkForWin();
+    }, speed)
+}
 let pacman = new Pacman(pacmanStartingIndex, 300)
-// movePacman(pacman.speed);
-
-
+movePacman(pacman, pacman.speed);
 
 function control(e) {
-    squares[pacman.currentIndex].classList.remove("pacman");
     switch(e.keyCode) {
         case 40:
             if (
@@ -101,7 +143,7 @@ function control(e) {
                 !squares[pacman.currentIndex + width].classList.contains("wall") &&
                 pacman.currentIndex + width < width ** 2
             ) {
-                pacman.currentIndex += width;
+                pacman.direction = width;
             }
         break
 
@@ -111,7 +153,7 @@ function control(e) {
                 !squares[pacman.currentIndex - width].classList.contains("wall") &&
                 pacman.currentIndex - width >= 0
             ) {
-                pacman.currentIndex -= width;
+                pacman.direction = -width;
             }
         break
 
@@ -121,12 +163,10 @@ function control(e) {
                 !squares[pacman.currentIndex - 1].classList.contains("wall") &&
                 pacman.currentIndex % width !== 0
             ) {
-                pacman.currentIndex--;
+                pacman.direction = -1;
             }
 
-            if (pacman.currentIndex === 364) {
-                pacman.currentIndex = 391;
-            }
+
         break
         
         case 39:
@@ -135,20 +175,11 @@ function control(e) {
                 !squares[pacman.currentIndex + 1].classList.contains("wall") &&
                 pacman.currentIndex % width < width - 1
             ) {
-                pacman.currentIndex++;
-            }
-
-            if (pacman.currentIndex === 391) {
-                pacman.currentIndex = 364;
+                pacman.direction = 1;
             }
         break
 
     }
-    squares[pacman.currentIndex].classList.add("pacman");
-    checkForGameOver();
-    pacDotEaten();
-    powerPelletEaten();
-    checkForWin();
 }
 
 document.addEventListener("keyup", control)
@@ -200,7 +231,7 @@ ghosts.forEach(ghost => {
 ghosts.forEach(ghost => moveGhost(ghost));
 
 function moveGhost(ghost) {
-    const directions = [-1, +1, -width, +width];
+    const directions = [-1, 1, -width, width];
     let direction = directions[Math.floor(Math.random() * directions.length)];
 
     ghost.timerId = setInterval(() => {
@@ -238,6 +269,7 @@ function checkForGameOver() {
         squares[pacman.currentIndex].classList.contains("ghost") && 
         !squares[pacman.currentIndex].classList.contains("scared-ghost")
     ) {
+        clearInterval(pacman);
         ghosts.forEach(ghost => clearInterval(ghost.timerId));
         document.removeEventListener("keyup", control);
         scoreValue.textContent = " Game Over";
