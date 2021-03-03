@@ -16,14 +16,14 @@ const layout = [
     1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,
     1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,
     1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,
-    1,4,4,4,4,1,0,1,1,4,4,4,4,4,4,4,4,4,4,1,1,0,1,4,4,4,4,1,
-    1,4,4,4,4,1,0,1,1,4,1,1,1,2,2,1,1,1,4,1,1,0,1,4,4,4,4,1,
-    1,1,1,1,1,1,0,1,1,4,1,2,2,2,2,2,2,1,4,1,1,0,1,1,1,1,1,1,
-    0,0,0,0,0,0,0,0,0,4,1,2,2,2,2,2,2,1,4,0,0,0,0,0,0,0,0,0,
-    1,1,1,1,1,1,0,1,1,4,1,2,2,2,2,2,2,1,4,1,1,0,1,1,1,1,1,1,
-    1,4,4,4,4,1,0,1,1,4,1,1,1,1,1,1,1,1,4,1,1,0,1,1,4,4,4,1,
-    1,1,1,1,1,1,0,1,1,4,1,1,1,1,1,1,1,1,4,1,1,0,1,1,1,1,1,1,
-    1,0,0,0,0,0,0,0,0,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,1,
+    1,4,4,4,4,1,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1,0,1,4,4,4,4,1,
+    1,4,4,4,4,1,0,1,1,0,1,1,1,2,2,1,1,1,0,1,1,0,1,4,4,4,4,1,
+    1,1,1,1,1,1,0,1,1,0,1,2,2,2,2,2,2,1,0,1,1,0,1,1,1,1,1,1,
+    0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,1,0,0,0,0,0,0,0,0,0,0,
+    1,1,1,1,1,1,0,1,1,0,1,2,2,2,2,2,2,1,0,1,1,0,1,1,1,1,1,1,
+    1,4,4,4,4,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,4,4,4,1,
+    1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
     1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,
     1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,
     1,3,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,3,1,
@@ -77,7 +77,7 @@ class Pacman {
         this.speed = speed;
         this.currentIndex = startIndex;
         this.timerId = undefined;
-        this.direction = 1;
+        this.direction = [1, 1];
     }
 }
 
@@ -85,40 +85,46 @@ class Pacman {
 function movePacman(pacman, speed) {
     pacman.timerId = setInterval(function() {
         const boundaryCollision = (
-            squares[pacman.currentIndex + pacman.direction].classList.contains("ghost-lair") ||
-            squares[pacman.currentIndex + pacman.direction].classList.contains("wall")
+            squares[pacman.currentIndex + pacman.direction[0]].classList.contains("ghost-lair") ||
+            squares[pacman.currentIndex + pacman.direction[0]].classList.contains("wall")
         )
-        
+
+        // If the current direction and the desired direction are opposite each
+        // other, pacman will get stuck in a redirection loop.
+        if (pacman.direction[0] !== -pacman.direction[1]) {
+            redirect(pacman.currentIndex, pacman.direction[1]);
+        }
+        console.log(pacman.direction);
         squares[pacman.currentIndex].classList.remove("pacman");
 
         if (
-            pacman.direction === width &&
+            pacman.direction[0] === width &&
             !boundaryCollision &&
             pacman.currentIndex + width < (width ** 2) - width
         ) {
-            pacman.currentIndex += pacman.direction;
+            pacman.currentIndex += pacman.direction[0];
         } else if (
-            pacman.direction === -width &&
+            pacman.direction[0] === -width &&
             !boundaryCollision &&
             pacman.currentIndex >= width * 2
         ) {
-            pacman.currentIndex += pacman.direction;
+            pacman.currentIndex += pacman.direction[0];
         } else if (
-            pacman.direction === -1 &&
+            pacman.direction[0] === -1 &&
             !boundaryCollision &&
             pacman.currentIndex % width !== 1
         ) {
-            pacman.currentIndex += pacman.direction;
+            pacman.currentIndex += pacman.direction[0];
 
             if (pacman.currentIndex === 364) {
                 pacman.currentIndex = 391;
             }
         } else if (
-            pacman.direction === 1 &&
+            pacman.direction[0] === 1 &&
             !boundaryCollision &&
             pacman.currentIndex % width < width - 2
         ) {
-            pacman.currentIndex += pacman.direction;
+            pacman.currentIndex += pacman.direction[0];
 
             if (pacman.currentIndex === 392) {
                 pacman.currentIndex = 364;
@@ -132,7 +138,7 @@ function movePacman(pacman, speed) {
         checkForWin();
     }, speed)
 }
-let pacman = new Pacman(pacmanStartingIndex, 300)
+let pacman = new Pacman(pacmanStartingIndex, 250)
 movePacman(pacman, pacman.speed);
 
 function control(e) {
@@ -143,7 +149,10 @@ function control(e) {
                 !squares[pacman.currentIndex + width].classList.contains("wall") &&
                 pacman.currentIndex + width < width ** 2
             ) {
-                pacman.direction = width;
+                pacman.direction[0] = width;
+                pacman.direction[1] = width;
+            } else {
+                pacman.direction[1] = width;
             }
         break
 
@@ -153,7 +162,10 @@ function control(e) {
                 !squares[pacman.currentIndex - width].classList.contains("wall") &&
                 pacman.currentIndex - width >= 0
             ) {
-                pacman.direction = -width;
+                pacman.direction[0] = -width;
+                pacman.direction[1] = -width;
+            } else {
+                pacman.direction[1] = -width;
             }
         break
 
@@ -163,10 +175,11 @@ function control(e) {
                 !squares[pacman.currentIndex - 1].classList.contains("wall") &&
                 pacman.currentIndex % width !== 0
             ) {
-                pacman.direction = -1;
+                pacman.direction[0] = -1;
+                pacman.direction[1] = -1;
+            } else {
+                pacman.direction[1] = -1;
             }
-
-
         break
         
         case 39:
@@ -175,10 +188,23 @@ function control(e) {
                 !squares[pacman.currentIndex + 1].classList.contains("wall") &&
                 pacman.currentIndex % width < width - 1
             ) {
-                pacman.direction = 1;
+                pacman.direction[0] = 1;
+                pacman.direction[1] = 1;
+            } else {
+                pacman.direction[1] = 1;
             }
         break
 
+    }
+}
+
+function redirect(index, direction) {
+    // TODO: Substitue flags for classes.
+    if (pacman.direction[0] !== pacman.direction[1] &&
+        layout[index + direction] === 0 ||
+        layout[index + direction] === 3
+    ) {
+        pacman.direction[0] = direction;
     }
 }
 
@@ -228,7 +254,7 @@ ghosts.forEach(ghost => {
     squares[ghost.startIndex].classList.add(ghost.className, "ghost");
 })
 
-ghosts.forEach(ghost => moveGhost(ghost));
+// ghosts.forEach(ghost => moveGhost(ghost));
 
 function moveGhost(ghost) {
     const directions = [-1, 1, -width, width];
