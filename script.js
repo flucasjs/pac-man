@@ -84,17 +84,17 @@ class Pacman {
 
 function movePacman(pacman, speed) {
     pacman.timerId = setInterval(function() {
-        const boundaryCollision = (
-            squares[pacman.currentIndex + pacman.direction[0]].classList.contains("ghost-lair") ||
-            squares[pacman.currentIndex + pacman.direction[0]].classList.contains("wall")
-        )
-
         // If the current direction and the desired direction are opposite each
         // other, pacman will get stuck in a redirection loop.
         if (pacman.direction[0] !== -pacman.direction[1]) {
             redirect(pacman.currentIndex, pacman.direction[1]);
         }
-        console.log(pacman.direction);
+
+        const boundaryCollision = (
+            squares[pacman.currentIndex + pacman.direction[0]].classList.contains("ghost-lair") ||
+            squares[pacman.currentIndex + pacman.direction[0]].classList.contains("wall")
+        )
+        
         squares[pacman.currentIndex].classList.remove("pacman");
 
         if (
@@ -150,23 +150,19 @@ function control(e) {
                 pacman.currentIndex + width < width ** 2
             ) {
                 pacman.direction[0] = width;
-                pacman.direction[1] = width;
-            } else {
-                pacman.direction[1] = width;
             }
+            pacman.direction[1] = width;
         break
 
         case 38:
-            if (
+            if ( 
                 !squares[pacman.currentIndex - width].classList.contains("ghost-lair") &&
                 !squares[pacman.currentIndex - width].classList.contains("wall") &&
                 pacman.currentIndex - width >= 0
             ) {
                 pacman.direction[0] = -width;
-                pacman.direction[1] = -width;
-            } else {
-                pacman.direction[1] = -width;
             }
+            pacman.direction[1] = -width;
         break
 
         case 37:
@@ -176,23 +172,19 @@ function control(e) {
                 pacman.currentIndex % width !== 0
             ) {
                 pacman.direction[0] = -1;
-                pacman.direction[1] = -1;
-            } else {
-                pacman.direction[1] = -1;
-            }
+            } 
+            pacman.direction[1] = -1;
         break
         
         case 39:
-            if(
+            if (
                 !squares[pacman.currentIndex + 1].classList.contains("ghost-lair") &&
                 !squares[pacman.currentIndex + 1].classList.contains("wall") &&
                 pacman.currentIndex % width < width - 1
             ) {
                 pacman.direction[0] = 1;
-                pacman.direction[1] = 1;
-            } else {
-                pacman.direction[1] = 1;
             }
+            pacman.direction[1] = 1;
         break
 
     }
