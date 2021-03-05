@@ -3,6 +3,7 @@ const grid = document.querySelector(".grid");
 const scoreText = document.querySelector("#score");
 const scoreValue = document.querySelector("#score span");
 let squares = [];
+let powerPellets = [];
 let score = 0;
 
 const layout = [
@@ -40,7 +41,6 @@ function createBoard() {
     let divSquares = new DocumentFragment();
     for (let i = 0; i < layout.length; i++) {
         let square = document.createElement("div");
-        
 
         if (layout[i] === 0) {
             square.classList.add("pac-dot");
@@ -50,6 +50,7 @@ function createBoard() {
             square.classList.add("ghost-lair");
         } else if (layout[i] === 3) {
             square.classList.add("power-pellet");
+            powerPellets.push(new PowerPellet(i))
         } else if (layout[i] === 5) {
             square.classList.add("bottom-left-corner", "wall");
         } else if (layout[i] === 6) {
@@ -64,6 +65,15 @@ function createBoard() {
         squares.push(square);
     }
     grid.appendChild(divSquares);
+}
+
+class PowerPellet {
+    constructor(index) {
+        this.index = index;
+        this.visible = true;
+        this.eaten = false;
+        this.timerId = undefined;
+    }
 }
 
 createBoard();
@@ -130,6 +140,13 @@ function movePacman(pacman, speed) {
                 pacman.currentIndex = 364;
             }
         }
+
+        powerPellets.forEach(p => {
+            if (p.index === pacman.currentIndex) {
+                clearInterval(p.timerId);
+                squares[p.index].style.visibility = "initial";
+            }
+        })
 
         squares[pacman.currentIndex].classList.add("pacman");
         checkForGameOver();
@@ -213,11 +230,26 @@ function powerPelletEaten() {
     if (squares[pacman.currentIndex].classList.contains("power-pellet")) {
         squares[pacman.currentIndex].classList.remove("power-pellet");
 
+        powerPellets.forEach(p => {
+            if (p.index === pacman.currentIndex) {
+                p.eaten = true;
+            }
+        })
+        
         ghosts.forEach(ghost => ghost.isScared = true);
+
         setTimeout(unScareGhosts, 10000);
 
         scoreValue.textContent = score += 10;
     }
+}
+
+function blinkPellet(pellet) {
+    pellet.timerId = setInterval(() => {
+        const visibility = ["hidden", "initial"];
+        pellet.visible = !pellet.visible;
+        squares[pellet.index].style.visibility = visibility[Number(pellet.visible)];
+    }, 250)
 }
 
 function unScareGhosts() {
@@ -301,3 +333,5 @@ function checkForWin() {
         scoreValue.textContent = "You Won!";
     }
 }
+
+powerPellets.forEach(blinkPellet);
