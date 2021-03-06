@@ -20,7 +20,7 @@ const layout = [
     1,4,4,4,4,1,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1,0,1,4,4,4,4,1,
     1,4,4,4,4,1,0,1,1,0,1,1,1,2,2,1,1,1,0,1,1,0,1,4,4,4,4,1,
     1,1,1,1,1,1,0,1,1,0,1,2,2,2,2,2,2,1,0,1,1,0,1,1,1,1,1,1,
-    0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,1,0,0,0,0,0,0,0,0,0,0,
+    'a',4,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,1,0,0,0,0,0,0,0,0,4,'b',
     1,1,1,1,1,1,0,1,1,0,1,2,2,2,2,2,2,1,0,1,1,0,1,1,1,1,1,1,
     1,4,4,4,4,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,4,4,4,1,
     1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,
@@ -59,6 +59,8 @@ function createBoard() {
             square.classList.add("top-left-corner", "wall");
         } else if (layout[i] === 9) {
             square.classList.add("top-right-corner", "wall");
+        } else if (layout[i] === "a" || layout[i] === "b") {
+            square.classList.add('portal')
         }
 
         divSquares.appendChild(square);
@@ -66,6 +68,14 @@ function createBoard() {
     }
     grid.appendChild(divSquares);
 }
+
+class Portal {
+    constructor(indexA, indexB) {
+        this.portals = [indexA, indexB];
+    }
+}
+
+let portal = new Portal(364, 391);
 
 class PowerPellet {
     constructor(index) {
@@ -126,8 +136,8 @@ function movePacman(pacman, speed) {
         ) {
             pacman.currentIndex += pacman.direction[0];
 
-            if (pacman.currentIndex === 364) {
-                pacman.currentIndex = 391;
+            if (pacman.currentIndex - 1 === portal.portals[0]) {
+                pacman.currentIndex = portal.portals[1];
             }
         } else if (
             pacman.direction[0] === 1 &&
@@ -136,10 +146,11 @@ function movePacman(pacman, speed) {
         ) {
             pacman.currentIndex += pacman.direction[0];
 
-            if (pacman.currentIndex === 392) {
-                pacman.currentIndex = 364;
+
+            if (pacman.currentIndex + 1 === portal.portals[1]) {
+                pacman.currentIndex = portal.portals[0];
             }
-        }
+        } 
 
         powerPellets.forEach(p => {
             if (p.index === pacman.currentIndex) {
@@ -278,7 +289,7 @@ ghosts.forEach(ghost => {
     squares[ghost.startIndex].classList.add(ghost.className, "ghost");
 })
 
-// ghosts.forEach(ghost => moveGhost(ghost));
+ghosts.forEach(ghost => moveGhost(ghost));
 
 function moveGhost(ghost) {
     const directions = [-1, 1, -width, width];
