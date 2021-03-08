@@ -2,6 +2,7 @@ html, body {
     margin: 10;
     padding: 10;
     background: whitesmoke;
+    background: black;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -15,14 +16,14 @@ div {
 .grid {
     display: flex;
     flex-wrap: wrap;
-    width: 420px;
-    height: 420px;
+    width: 560px;
+    height: 560px;
     border-radius: 10px;
 }
 
 .grid div {
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
 }
 
 h3,
@@ -34,7 +35,7 @@ h3,
 
 .pac-dot {
     background-color: #FFFF00;
-    border: 5px solid black;
+    border: 8px solid black;
     box-sizing: border-box;
 }
 
@@ -47,7 +48,7 @@ h3,
 .pacman,
 .power-pellet,
 .pac-dot {
-    border-radius: 7.5px;
+    border-radius: 50%;
     box-sizing: border-box;
 }
 
