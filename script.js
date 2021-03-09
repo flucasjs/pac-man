@@ -170,8 +170,7 @@ let pacman = new Pacman(pacmanStartingIndex, 250)
 movePacman(pacman, pacman.speed);
 
 function control(e) {
-    switch(e.keyCode) {
-        case 40:
+        if ((e.code === "ArrowDown" || e.code === "KeyS")) {
             if (
                 !squares[pacman.currentIndex + width].classList.contains("ghost-lair") &&
                 !squares[pacman.currentIndex + width].classList.contains("wall") &&
@@ -180,10 +179,8 @@ function control(e) {
                 pacman.direction[0] = width;
             }
             pacman.direction[1] = width;
-        break
-
-        case 38:
-            if ( 
+        }  else if ((e.code === "ArrowUp" || e.code === "KeyW")) {
+            if (
                 !squares[pacman.currentIndex - width].classList.contains("ghost-lair") &&
                 !squares[pacman.currentIndex - width].classList.contains("wall") &&
                 pacman.currentIndex - width >= 0
@@ -191,10 +188,8 @@ function control(e) {
                 pacman.direction[0] = -width;
             }
             pacman.direction[1] = -width;
-        break
-
-        case 37:
-            if ( 
+        } else if ((e.code === "ArrowLeft" || e.code === "KeyA")) {
+            if (
                 !squares[pacman.currentIndex - 1].classList.contains("ghost-lair") &&
                 !squares[pacman.currentIndex - 1].classList.contains("wall") &&
                 pacman.currentIndex % width !== 0
@@ -202,9 +197,7 @@ function control(e) {
                 pacman.direction[0] = -1;
             } 
             pacman.direction[1] = -1;
-        break
-        
-        case 39:
+        } else if ((e.code === "ArrowRight" || e.code === "KeyD")) {
             if (
                 !squares[pacman.currentIndex + 1].classList.contains("ghost-lair") &&
                 !squares[pacman.currentIndex + 1].classList.contains("wall") &&
@@ -213,9 +206,7 @@ function control(e) {
                 pacman.direction[0] = 1;
             }
             pacman.direction[1] = 1;
-        break
-
-    }
+        }  
 }
 
 function redirect(index, direction) {
