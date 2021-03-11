@@ -1,3 +1,9 @@
+import Pacman from "./modules/Pacman.js"
+import Ghost from "./modules/Ghost.js"
+import Portal from "./modules/Portal.js"
+import PowerPellet from "./modules/PowerPellet.js"
+import layout from "./modules/layout.js"
+
 const width = 28;
 const grid = document.querySelector(".grid");
 const scoreText = document.querySelector("#score");
@@ -5,37 +11,6 @@ const scoreValue = document.querySelector("#score span");
 let squares = [];
 let powerPellets = [];
 let score = 0;
-
-const layout = [
-    8,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,9,
-    1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,
-    1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,
-    1,3,1,4,4,1,0,1,4,4,4,1,0,1,1,0,1,4,4,4,1,0,1,4,4,1,3,1,
-    1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-    1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,
-    1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,
-    1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,
-    1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,
-    1,4,4,4,4,1,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1,0,1,4,4,4,4,1,
-    1,4,4,4,4,1,0,1,1,0,1,1,1,2,2,1,1,1,0,1,1,0,1,4,4,4,4,1,
-    1,1,1,1,1,1,0,1,1,0,1,2,2,2,2,2,2,1,0,1,1,0,1,1,1,1,1,1,
-    'a',4,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,1,0,0,0,0,0,0,0,0,4,'b',
-    1,1,1,1,1,1,0,1,1,0,1,2,2,2,2,2,2,1,0,1,1,0,1,1,1,1,1,1,
-    1,4,4,4,4,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,4,4,4,1,
-    1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-    1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,
-    1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,
-    1,3,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,3,1,
-    1,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,1,
-    1,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,1,
-    1,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,0,0,1,
-    1,0,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,1,
-    1,0,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,1,
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-    5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6 
-]
 
 function createBoard() {
     let divSquares = new DocumentFragment();
@@ -68,39 +43,12 @@ function createBoard() {
     }
     grid.appendChild(divSquares);
 }
-
-class Portal {
-    constructor(indexA, indexB) {
-        this.portals = [indexA, indexB];
-    }
-}
-
 let portal = new Portal(364, 391);
-
-class PowerPellet {
-    constructor(index) {
-        this.index = index;
-        this.visible = true;
-        this.eaten = false;
-        this.timerId = undefined;
-    }
-}
 
 createBoard();
 
 let pacmanStartingIndex = 490;
 squares[pacmanStartingIndex].classList.add("pacman");
-
-class Pacman {
-    constructor(startIndex, speed) {
-        this.startIndex = startIndex;
-        this.speed = speed;
-        this.currentIndex = startIndex;
-        this.timerId = undefined;
-        this.direction = [1, 1];
-    }
-}
-
 
 function movePacman(pacman, speed) {
     pacman.timerId = setInterval(function() {
@@ -170,7 +118,7 @@ let pacman = new Pacman(pacmanStartingIndex, 250)
 movePacman(pacman, pacman.speed);
 
 function control(e) {
-        if ((e.code === "ArrowDown" || e.code === "KeyS")) {
+        if (e.code === "ArrowDown" || e.code === "KeyS") {
             if (
                 !squares[pacman.currentIndex + width].classList.contains("ghost-lair") &&
                 !squares[pacman.currentIndex + width].classList.contains("wall") &&
@@ -179,7 +127,7 @@ function control(e) {
                 pacman.direction[0] = width;
             }
             pacman.direction[1] = width;
-        }  else if ((e.code === "ArrowUp" || e.code === "KeyW")) {
+        }  else if (e.code === "ArrowUp" || e.code === "KeyW") {
             if (
                 !squares[pacman.currentIndex - width].classList.contains("ghost-lair") &&
                 !squares[pacman.currentIndex - width].classList.contains("wall") &&
@@ -188,7 +136,7 @@ function control(e) {
                 pacman.direction[0] = -width;
             }
             pacman.direction[1] = -width;
-        } else if ((e.code === "ArrowLeft" || e.code === "KeyA")) {
+        } else if (e.code === "ArrowLeft" || e.code === "KeyA") {
             if (
                 !squares[pacman.currentIndex - 1].classList.contains("ghost-lair") &&
                 !squares[pacman.currentIndex - 1].classList.contains("wall") &&
@@ -197,7 +145,7 @@ function control(e) {
                 pacman.direction[0] = -1;
             } 
             pacman.direction[1] = -1;
-        } else if ((e.code === "ArrowRight" || e.code === "KeyD")) {
+        } else if (e.code === "ArrowRight" || e.code === "KeyD") {
             if (
                 !squares[pacman.currentIndex + 1].classList.contains("ghost-lair") &&
                 !squares[pacman.currentIndex + 1].classList.contains("wall") &&
@@ -256,17 +204,6 @@ function blinkPellet(pellet) {
 
 function unScareGhosts() {
     ghosts.forEach(ghost => ghost.isScared = false);
-}
-
-class Ghost {
-    constructor(className, startIndex, speed) {
-        this.className = className;
-        this.startIndex = startIndex;
-        this.speed = speed;
-        this.currentIndex = startIndex;
-        this.isScared = false;
-        this.timerId = undefined;
-    }
 }
 
 const ghosts = [
