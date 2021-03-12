@@ -8,18 +8,45 @@ const width = 28;
 const grid = document.querySelector(".grid");
 const scoreText = document.querySelector("#score");
 const scoreValue = document.querySelector("#score span");
-let squares = [];
-let powerPellets = [];
+const squares = [];
+const powerPellets = [];
 let score = 0;
+
+const portal = new Portal(364, 391);
+
+createBoard();
+
+const pacmanStartingIndex = 490;
+const pacman = new Pacman(pacmanStartingIndex, 250)
+squares[pacmanStartingIndex].classList.add("pacman");
+movePacman(pacman, pacman.speed);
+
+document.addEventListener("keyup", control)
+
+const ghosts = [
+    new Ghost("blinky", 348, 250),
+    new Ghost("pinky", 376, 400),
+    new Ghost("inky", 351, 300),
+    new Ghost("clyde", 379, 500)
+];
+
+ghosts.forEach(ghost => {
+    squares[ghost.startIndex].classList.add(ghost.className, "ghost");
+})
+
+ghosts.forEach(ghost => moveGhost(ghost));
+
+powerPellets.forEach(blinkPellet);
 
 function createBoard() {
     let divSquares = new DocumentFragment();
     for (let i = 0; i < layout.length; i++) {
-        let square = document.createElement("div");
-
+        let square = document.createElement("div")
         if (layout[i] === 0) {
             square.classList.add("pac-dot");
         } else if (layout[i] === 1) {
+            // Check for adjacent walls on all four sides.
+            // If adjacent wall doesn't exist, add border to that side.
             square.classList.add("wall");
         } else if (layout[i] === 2) {
             square.classList.add("ghost-lair");
@@ -43,12 +70,6 @@ function createBoard() {
     }
     grid.appendChild(divSquares);
 }
-let portal = new Portal(364, 391);
-
-createBoard();
-
-let pacmanStartingIndex = 490;
-squares[pacmanStartingIndex].classList.add("pacman");
 
 function movePacman(pacman, speed) {
     pacman.timerId = setInterval(function() {
@@ -114,60 +135,55 @@ function movePacman(pacman, speed) {
         checkForWin();
     }, speed)
 }
-let pacman = new Pacman(pacmanStartingIndex, 250)
-movePacman(pacman, pacman.speed);
 
 function control(e) {
-        if (e.code === "ArrowDown" || e.code === "KeyS") {
-            if (
-                !squares[pacman.currentIndex + width].classList.contains("ghost-lair") &&
-                !squares[pacman.currentIndex + width].classList.contains("wall") &&
-                pacman.currentIndex + width < width ** 2
-            ) {
-                pacman.direction[0] = width;
-            }
-            pacman.direction[1] = width;
-        }  else if (e.code === "ArrowUp" || e.code === "KeyW") {
-            if (
-                !squares[pacman.currentIndex - width].classList.contains("ghost-lair") &&
-                !squares[pacman.currentIndex - width].classList.contains("wall") &&
-                pacman.currentIndex - width >= 0
-            ) {
-                pacman.direction[0] = -width;
-            }
-            pacman.direction[1] = -width;
-        } else if (e.code === "ArrowLeft" || e.code === "KeyA") {
-            if (
-                !squares[pacman.currentIndex - 1].classList.contains("ghost-lair") &&
-                !squares[pacman.currentIndex - 1].classList.contains("wall") &&
-                pacman.currentIndex % width !== 0
-            ) {
-                pacman.direction[0] = -1;
-            } 
-            pacman.direction[1] = -1;
-        } else if (e.code === "ArrowRight" || e.code === "KeyD") {
-            if (
-                !squares[pacman.currentIndex + 1].classList.contains("ghost-lair") &&
-                !squares[pacman.currentIndex + 1].classList.contains("wall") &&
-                pacman.currentIndex % width < width - 1
-            ) {
-                pacman.direction[0] = 1;
-            }
-            pacman.direction[1] = 1;
-        }  
+    if (e.code === "ArrowDown" || e.code === "KeyS") {
+        if (
+            !squares[pacman.currentIndex + width].classList.contains("ghost-lair") &&
+            !squares[pacman.currentIndex + width].classList.contains("wall") &&
+            pacman.currentIndex + width < width ** 2
+        ) {
+            pacman.direction[0] = width;
+        }
+        pacman.direction[1] = width;
+    }  else if (e.code === "ArrowUp" || e.code === "KeyW") {
+        if (
+            !squares[pacman.currentIndex - width].classList.contains("ghost-lair") &&
+            !squares[pacman.currentIndex - width].classList.contains("wall") &&
+            pacman.currentIndex - width >= 0
+        ) {
+            pacman.direction[0] = -width;
+        }
+        pacman.direction[1] = -width;
+    } else if (e.code === "ArrowLeft" || e.code === "KeyA") {
+        if (
+            !squares[pacman.currentIndex - 1].classList.contains("ghost-lair") &&
+            !squares[pacman.currentIndex - 1].classList.contains("wall") &&
+            pacman.currentIndex % width !== 0
+        ) {
+            pacman.direction[0] = -1;
+        } 
+        pacman.direction[1] = -1;
+    } else if (e.code === "ArrowRight" || e.code === "KeyD") {
+        if (
+            !squares[pacman.currentIndex + 1].classList.contains("ghost-lair") &&
+            !squares[pacman.currentIndex + 1].classList.contains("wall") &&
+            pacman.currentIndex % width < width - 1
+        ) {
+            pacman.direction[0] = 1;
+        }
+        pacman.direction[1] = 1;
+    }  
 }
 
 function redirect(index, direction) {
-    // TODO: Substitue flags for classes.
     if (pacman.direction[0] !== pacman.direction[1] &&
-        layout[index + direction] === 0 ||
-        layout[index + direction] === 3
+        squares[index + direction].classList.contains("pac-dot") ||
+        squares[index + direction].classList.contains("power-pellet")
     ) {
         pacman.direction[0] = direction;
     }
 }
-
-document.addEventListener("keyup", control)
 
 function pacDotEaten() {
     if (squares[pacman.currentIndex].classList.contains("pac-dot")) {
@@ -205,19 +221,6 @@ function blinkPellet(pellet) {
 function unScareGhosts() {
     ghosts.forEach(ghost => ghost.isScared = false);
 }
-
-const ghosts = [
-    new Ghost("blinky", 348, 250),
-    new Ghost("pinky", 376, 400),
-    new Ghost("inky", 351, 300),
-    new Ghost("clyde", 379, 500)
-];
-
-ghosts.forEach(ghost => {
-    squares[ghost.startIndex].classList.add(ghost.className, "ghost");
-})
-
-ghosts.forEach(ghost => moveGhost(ghost));
 
 function moveGhost(ghost) {
     const directions = [-1, 1, -width, width];
@@ -272,5 +275,3 @@ function checkForWin() {
         scoreValue.textContent = "You Won!";
     }
 }
-
-powerPellets.forEach(blinkPellet);
