@@ -45,6 +45,22 @@ h3,
     box-sizing: border-box;
 }
 
+.top-wall {
+    border-top: 1px solid blue;
+}
+
+.right-wall {
+    border-right: 1px solid blue;
+}
+
+.bottom-wall {
+    border-right: 1px solid blue;
+}
+
+.left-wall {
+    border-right: 1px solid blue;
+}
+
 .pacman,
 .power-pellet,
 .pac-dot {
