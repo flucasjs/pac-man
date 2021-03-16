@@ -40,7 +40,6 @@ h3,
 }
 
 .wall {
-    border: 1px solid blue;
     background-color: black;
     box-sizing: border-box;
 }
@@ -54,11 +53,11 @@ h3,
 }
 
 .bottom-wall {
-    border-right: 1px solid blue;
+    border-bottom: 1px solid blue;
 }
 
 .left-wall {
-    border-right: 1px solid blue;
+    border-left: 1px solid blue;
 }
 
 .pacman,

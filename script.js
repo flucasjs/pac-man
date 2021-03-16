@@ -45,9 +45,23 @@ function createBoard() {
         if (layout[i] === 0) {
             square.classList.add("pac-dot");
         } else if (layout[i] === 1) {
-            // Check for adjacent walls on all four sides.
-            // If adjacent wall doesn't exist, add border to that side.
             square.classList.add("wall");
+
+            if (!layout[i - width] || layout[i - width] !== 1) {
+                square.classList.add("top-wall");
+            } 
+            
+            if (!layout[i + 1] || layout[i + 1] !== 1) {
+                square.classList.add("right-wall");
+            } 
+            
+            if (!layout[i + width] || layout[i + width] !== 1) {
+                square.classList.add("bottom-wall");
+            } 
+            
+            if (!layout[i - 1] || layout[i - 1] !== 1) {
+                square.classList.add("left-wall");
+            }
         } else if (layout[i] === 2) {
             square.classList.add("ghost-lair");
         } else if (layout[i] === 3) {
