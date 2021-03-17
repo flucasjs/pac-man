@@ -46,20 +46,31 @@ function createBoard() {
             square.classList.add("pac-dot");
         } else if (layout[i] === 1) {
             square.classList.add("wall");
-
-            if (!layout[i - width] || layout[i - width] !== 1) {
+            if (
+                !layout[i - width] || 
+                layout[i - width] !== 1 || 
+                i < 28
+            ) {
                 square.classList.add("top-wall");
             } 
-            
-            if (!layout[i + 1] || layout[i + 1] !== 1) {
+            if (
+                !layout[i + 1] || 
+                layout[i + 1] !== 1 || 
+                i % 28 === 27
+            ) {
                 square.classList.add("right-wall");
             } 
-            
-            if (!layout[i + width] || layout[i + width] !== 1) {
+            if (
+                !layout[i + width] || 
+                layout[i + width] !== 1 || 
+                i + width > width ** 2
+            ) {
                 square.classList.add("bottom-wall");
             } 
-            
-            if (!layout[i - 1] || layout[i - 1] !== 1) {
+            if (!layout[i - 1] || 
+                layout[i - 1] !== 1 || 
+                i % 28 === 0
+            ) {
                 square.classList.add("left-wall");
             }
         } else if (layout[i] === 2) {
