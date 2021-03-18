@@ -17,7 +17,7 @@ const portal = new Portal(364, 391);
 createBoard();
 
 const pacmanStartingIndex = 490;
-const pacman = new Pacman(pacmanStartingIndex, 250)
+const pacman = new Pacman(pacmanStartingIndex, 350)
 squares[pacmanStartingIndex].classList.add("pacman");
 movePacman(pacman, pacman.speed);
 
@@ -198,13 +198,14 @@ function control(e) {
             pacman.direction[0] = 1;
         }
         pacman.direction[1] = 1;
-    }  
+    }
 }
 
 function redirect(index, direction) {
     if (pacman.direction[0] !== pacman.direction[1] &&
         squares[index + direction].classList.contains("pac-dot") ||
-        squares[index + direction].classList.contains("power-pellet")
+        squares[index + direction].classList.contains("power-pellet") ||
+        squares[index + direction].classList.contains("empty")
     ) {
         pacman.direction[0] = direction;
     }
@@ -214,6 +215,7 @@ function pacDotEaten() {
     if (squares[pacman.currentIndex].classList.contains("pac-dot")) {
         squares[pacman.currentIndex].classList.remove("pac-dot");
         scoreValue.textContent = ++score;
+        squares[pacman.currentIndex].classList.add("empty");
     }
 }
 
