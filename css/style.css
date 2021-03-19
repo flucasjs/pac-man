@@ -41,23 +41,23 @@ h3,
 
 .wall {
     background-color: black;
-    box-sizing: border-box;
+    box-sizing: border-box; 
 }
 
 .top-wall {
-    border-top: 1px solid blue;
+    border-top: 0.5px solid blue;
 }
 
 .right-wall {
-    border-right: 1px solid blue;
+    border-right: 0.5px solid blue;
 }
 
 .bottom-wall {
-    border-bottom: 1px solid blue;
+    border-bottom: 0.5px solid blue;
 }
 
 .left-wall {
-    border-left: 1px solid blue;
+    border-left: 0.5px solid blue;
 }
 
 .pacman,
