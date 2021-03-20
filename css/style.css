@@ -26,11 +26,31 @@ div {
     height: 20px;
 }
 
+.game-title {
+    color: #FFFF00;
+    font-size: 5rem;
+}
+
+.instructions {
+    color: white;
+    font-size: 2.5rem;
+    font-family: 'VT323', monospace;
+}
+
+#score {
+    display: none;
+}
+
+h1,
 h3,
 #score {
     font-family: 'Monoton', monospace;
-    font-size: 2.5rem;
+}
+
+h3,
+#score {
     color: blue;
+    font-size: 2.5rem;
 }
 
 .pac-dot {

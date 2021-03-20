@@ -8,20 +8,16 @@ const width = 28;
 const grid = document.querySelector(".grid");
 const scoreText = document.querySelector("#score");
 const scoreValue = document.querySelector("#score span");
+const title = document.querySelector(".game-title");
+const instructions = document.querySelector(".instructions");
 const squares = [];
 const powerPellets = [];
 let score = 0;
 
 const portal = new Portal(364, 391);
-
-createBoard();
-
 const pacmanStartingIndex = 490;
 const pacman = new Pacman(pacmanStartingIndex, 350)
-squares[pacmanStartingIndex].classList.add("pacman");
-movePacman(pacman, pacman.speed);
-
-document.addEventListener("keyup", control)
+document.addEventListener("keyup", startGame);
 
 const ghosts = [
     new Ghost("blinky", 348, 250),
@@ -30,13 +26,24 @@ const ghosts = [
     new Ghost("clyde", 379, 500)
 ];
 
-ghosts.forEach(ghost => {
-    squares[ghost.startIndex].classList.add(ghost.className, "ghost");
-})
-
-ghosts.forEach(ghost => moveGhost(ghost));
-
-powerPellets.forEach(blinkPellet);
+function startGame(e) {
+    if (e.code === "Enter") {
+        title.style.display = "none";
+        instructions.style.display = "none";
+        createBoard();
+        squares[pacmanStartingIndex].classList.add("pacman");
+        movePacman(pacman, pacman.speed);
+        document.removeEventListener("keyup", startGame);
+        document.addEventListener("keyup", control);
+        ghosts.forEach(ghost => {
+            squares[ghost.startIndex].classList.add(ghost.className, "ghost");
+        })
+        
+        ghosts.forEach(ghost => moveGhost(ghost));
+        
+        powerPellets.forEach(blinkPellet);
+    }
+}
 
 function createBoard() {
     let divSquares = new DocumentFragment();
