@@ -5,8 +5,9 @@ html, body {
     background: black;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    height: 100vh;
+    overflow: hidden;
 }
 
 div {
@@ -19,6 +20,7 @@ div {
     width: 560px;
     height: 560px;
     border-radius: 10px;
+    margin-top: 5.25em;
 }
 
 .grid div {
@@ -28,13 +30,15 @@ div {
 
 .game-title {
     color: #FFFF00;
-    font-size: 5rem;
+    font-size: 6.75rem;
+    margin: 0.75em auto 0;
 }
 
 .instructions {
     color: white;
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-family: 'VT323', monospace;
+    margin: 1em auto 0;
 }
 
 #score {
