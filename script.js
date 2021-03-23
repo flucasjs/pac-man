@@ -30,6 +30,7 @@ function startGame(e) {
     if (e.code === "Enter") {
         title.style.display = "none";
         instructions.style.display = "none";
+        scoreText.style.display = "initial";
         createBoard();
         squares[pacmanStartingIndex].classList.add("pacman");
         movePacman(pacman, pacman.speed);
