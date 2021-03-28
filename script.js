@@ -296,10 +296,15 @@ function checkForGameOver() {
         squares[pacman.currentIndex].classList.contains("ghost") && 
         !squares[pacman.currentIndex].classList.contains("scared-ghost")
     ) {
-        clearInterval(pacman);
+        clearInterval(pacman.timerId);
         ghosts.forEach(ghost => clearInterval(ghost.timerId));
         document.removeEventListener("keyup", control);
-        scoreValue.textContent = " Game Over";
+        title.innerText = "Game Over"
+        title.style.display = "initial";
+        title.style.color = "blue";
+        scoreText.style.color = "#FFFF00";
+        scoreText.style.fontSize = "3.75em";
+        displayGameOverScreen();
     }
 }
 
@@ -309,4 +314,8 @@ function checkForWin() {
         document.removeEventListener("keyup", control);
         scoreValue.textContent = "You Won!";
     }
+}
+
+function displayGameOverScreen() {
+    grid.style.display = "none";
 }
