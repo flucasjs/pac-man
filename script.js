@@ -301,7 +301,7 @@ function checkForGameOver() {
         document.removeEventListener("keyup", control);
         title.innerText = "Game Over"
         title.style.display = "initial";
-        title.style.color = "blue";
+        title.style.color = "#FF3100";
         scoreText.style.color = "#FFFF00";
         scoreText.style.fontSize = "3.75em";
         displayGameOverScreen();
