@@ -30,7 +30,7 @@ function startGame(e) {
     if (e.code === "Enter") {
         title.style.display = "none";
         instructions.style.display = "none";
-        scoreText.style.display = "initial";
+        scoreText.style.display = "block";
         createBoard();
         squares[pacmanStartingIndex].classList.add("pacman");
         movePacman(pacman, pacman.speed);
@@ -157,7 +157,7 @@ function movePacman(pacman, speed) {
         powerPellets.forEach(p => {
             if (p.index === pacman.currentIndex) {
                 clearInterval(p.timerId);
-                squares[p.index].style.visibility = "initial";
+                squares[p.index].style.visibility = "block";
             }
         })
 
@@ -247,7 +247,7 @@ function powerPelletEaten() {
 
 function blinkPellet(pellet) {
     pellet.timerId = setInterval(() => {
-        const visibility = ["hidden", "initial"];
+        const visibility = ["hidden", "block"];
         pellet.visible = !pellet.visible;
         squares[pellet.index].style.visibility = visibility[Number(pellet.visible)];
     }, 250)
@@ -300,7 +300,7 @@ function checkForGameOver() {
         ghosts.forEach(ghost => clearInterval(ghost.timerId));
         document.removeEventListener("keyup", control);
         title.innerText = "Game Over"
-        title.style.display = "initial";
+        title.style.display = "block";
         title.style.color = "#FF3100";
         scoreText.style.color = "#FFFF00";
         scoreText.style.fontSize = "3.75em";
