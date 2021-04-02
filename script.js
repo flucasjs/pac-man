@@ -152,14 +152,7 @@ function movePacman(pacman, speed) {
             if (pacman.currentIndex + 1 === portal.portals[1]) {
                 pacman.currentIndex = portal.portals[0];
             }
-        } 
-
-        powerPellets.forEach(p => {
-            if (p.index === pacman.currentIndex) {
-                clearInterval(p.timerId);
-                squares[p.index].style.visibility = "block";
-            }
-        })
+        }
 
         squares[pacman.currentIndex].classList.add("pacman");
         checkForGameOver();
@@ -234,6 +227,8 @@ function powerPelletEaten() {
         powerPellets.forEach(p => {
             if (p.index === pacman.currentIndex) {
                 p.eaten = true;
+                clearInterval(p.timerId);
+                squares[p.index].style.visibility = "visible";
             }
         })
         
@@ -247,7 +242,7 @@ function powerPelletEaten() {
 
 function blinkPellet(pellet) {
     pellet.timerId = setInterval(() => {
-        const visibility = ["hidden", "block"];
+        const visibility = ["hidden", "visible"];
         pellet.visible = !pellet.visible;
         squares[pellet.index].style.visibility = visibility[Number(pellet.visible)];
     }, 250)
