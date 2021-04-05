@@ -86,14 +86,6 @@ function createBoard() {
         } else if (layout[i] === 3) {
             square.classList.add("power-pellet");
             powerPellets.push(new PowerPellet(i))
-        } else if (layout[i] === 5) {
-            square.classList.add("bottom-left-corner", "wall");
-        } else if (layout[i] === 6) {
-            square.classList.add("bottom-right-corner", "wall");
-        } else if (layout[i] === 8) {
-            square.classList.add("top-left-corner", "wall");
-        } else if (layout[i] === 9) {
-            square.classList.add("top-right-corner", "wall");
         } else if (layout[i] === "a" || layout[i] === "b") {
             square.classList.add('portal')
         }

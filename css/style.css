@@ -28,19 +28,6 @@ div {
     height: 20px;
 }
 
-.game-title {
-    color: #FFFF00;
-    font-size: 6.75rem;
-    margin: 0.75em auto 0;
-}
-
-.instructions {
-    color: blue;
-    font-size: 3rem;
-    font-family: 'VT323', monospace;
-    margin: 1em auto 0;
-}
-
 #score {
     display: none;
 }
@@ -61,27 +48,6 @@ h3,
     background-color: #f8b090;
     border: 7.75px solid black;
     box-sizing: border-box;
-}
-
-.wall {
-    background-color: black;
-    box-sizing: border-box; 
-}
-
-.top-wall {
-    border-top: 0.5px solid blue;
-}
-
-.right-wall {
-    border-right: 0.5px solid blue;
-}
-
-.bottom-wall {
-    border-bottom: 0.5px solid blue;
-}
-
-.left-wall {
-    border-left: 0.5px solid blue;
 }
 
 .pacman,
@@ -131,18 +97,49 @@ h3,
     background-color: #1919A6;
 }
 
-.top-right-corner {
-    border-top-right-radius: 10px;
+.wall {
+    background-color: black;
+    box-sizing: border-box; 
 }
 
-.top-left-corner {
-    border-top-left-radius: 10px;
+.top-wall {
+    border-top: 0.5px solid blue;
 }
 
-.bottom-right-corner {
-    border-bottom-right-radius: 10px;
+.right-wall {
+    border-right: 0.5px solid blue;
 }
 
-.bottom-left-corner {
-    border-bottom-left-radius: 10px;
+.bottom-wall {
+    border-bottom: 0.5px solid blue;
 }
+
+.left-wall {
+    border-left: 0.5px solid blue;
+}
+
+.game-title {
+    color: #FFFF00;
+    font-size: 6.75rem;
+    margin: 2em auto 0;
+}
+
+.instructions {
+    color: blue;
+    font-size: 3rem;
+    font-family: 'VT323', monospace;
+    margin: 1em auto 0;
+}
+
+.gameover-title {
+    color: #FF3100;
+    display: block;
+}
+
+.gameover-score {
+    color: #FFFF00;
+    font-size: 3.75em;
+}
+
+
+
