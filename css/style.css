@@ -67,6 +67,38 @@ h3,
     border: 2.5px solid black;
 }
 
+.look-right {
+    width: 4px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: blue;
+    box-shadow: -3px 0 0px 5px whitesmoke;
+}
+
+.look-left {
+    width: 4px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: blue;
+    box-shadow: 3px 0 0px 5px whitesmoke;
+}
+
+.look-up {
+    width: 4px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: blue;
+    box-shadow: 0px 3px 0px 5px whitesmoke;
+}
+
+.look-down {
+    width: 4px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: blue;
+    box-shadow: 0px -3px 0px 5px whitesmoke;
+}
+
 .ghost {
     border: none;
     border-radius: 10px 10px 0px 0px;
